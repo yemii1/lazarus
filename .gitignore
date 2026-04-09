@@ -1,3 +1,11 @@
 # Godot 4+ specific ignores
 .godot/
-/android/
+!res://.godot/uid_cache.bin
+
+# Export folders (don't commit your builds)
+/exports/
+/builds/
+
+# OS generated files
+.DS_Store
+Thumbs.db
