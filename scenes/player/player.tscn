@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://ci0k3h0b67rvg"]
+
+[ext_resource type="Script" uid="uid://620gxr8rxolm" path="res://scenes/player/player.gd" id="1_8afob"]
+[ext_resource type="Script" uid="uid://nb3cgydg1fho" path="res://scenes/player/camera_controller.gd" id="2_dovo2"]
+[ext_resource type="Script" uid="uid://dwgjhkmha7ggq" path="res://scenes/player/movement_controller.gd" id="3_gmlin"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8afob"]
+albedo_color = Color(0, 0.17254902, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dovo2"]
+material = SubResource("StandardMaterial3D_8afob")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gmlin"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_lvxji"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" unique_id=279801229]
+script = ExtResource("1_8afob")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=314877668]
+mesh = SubResource("CapsuleMesh_dovo2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1604879584]
+shape = SubResource("CapsuleShape3D_gmlin")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=892160899]
+replication_config = SubResource("SceneReplicationConfig_lvxji")
+
+[node name="Head" type="Node3D" parent="." unique_id=937134560]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+script = ExtResource("2_dovo2")
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=41816668]
+
+[node name="MovementController" type="Node" parent="." unique_id=1533474724]
+script = ExtResource("3_gmlin")

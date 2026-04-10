@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bid6dn51xels5"]
+
+[ext_resource type="Script" uid="uid://dvavdc0dh0ifq" path="res://scenes/modules/Lobby/lobby.gd" id="1_gtmoo"]
+
+[node name="Lobby" type="Control" unique_id=2138087436]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gtmoo")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=958389689]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=15923843]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.0
+offset_top = -29.0
+offset_right = 23.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=17165682]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="VBoxContainer" unique_id=98892950]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Start"
