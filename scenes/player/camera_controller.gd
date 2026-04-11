@@ -1,74 +1,46 @@
 extends Node3D
 
-const MOUSE_SENSITIVITY = 0.002
-const BOB_FREQ = 2.0
-const BOB_AMP = 0.04
-var t_bob = 0.0
-
+@onready var player = owner
 @onready var camera = $Camera3D
-@onready var player = get_parent() # El componente habla con el Jefe
 @onready var status = $"../StatusManager"
+
 var normal_fov = 75.0
+var t_bob = 0.0
+var pulse_intensity: float = 0.0
 
 func _ready():
 	if player.is_multiplayer_authority():
 		camera.current = true
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		status.salud_cambiada.connect(_on_salud_update)
+		status.agotado.connect(_on_agotado_update)
 
 func _unhandled_input(event):
-	if not player.is_multiplayer_authority(): return
-	
-	if Input.is_action_just_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		player.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-		rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
-		rotation.x = clamp(rotation.x, deg_to_rad(-89), deg_to_rad(89))
+		player.rotate_y(-event.relative.x * 0.002)
+		rotate_x(-event.relative.y * 0.002)
+		rotation.x = clamp(rotation.x, -1.5, 1.5)
 
 func _process(delta):
 	if not player.is_multiplayer_authority(): return
-
-	# Agacharse (Solo la cámara baja, las colisiones las bajaremos luego si hace falta)
-	if Input.is_action_pressed("crouch"):
-		position.y = lerp(position.y, 0.0, delta * 10)
-	else:
-		position.y = lerp(position.y, 0.6, delta * 10)
-
-	# Head Bobbing leyendo la velocidad real del Jefe
-	var current_velocity = Vector3(player.velocity.x, 0, player.velocity.z)
 	
-	if player.is_on_floor() and current_velocity.length() > 0.1:
-		t_bob += delta * current_velocity.length()
-		var effort_ratio = current_velocity.length() / 8.0 # 8.0 es el sprint base
-		var bob_data = _calculate_headbob(t_bob, effort_ratio)
-		camera.transform.origin = bob_data[0]
-		camera.rotation.z = bob_data[1]
+	# Agachado suave
+	var target_y = 0.0 if Input.is_action_pressed("crouch") else 0.6
+	position.y = lerp(position.y, target_y, delta * 10)
+	
+	# Headbob
+	var vel = Vector3(player.velocity.x, 0, player.velocity.z).length()
+	if player.is_on_floor() and vel > 0.1:
+		t_bob += delta * vel
+		camera.transform.origin.y = sin(t_bob * 2.0) * (0.04 * (vel/8.0))
+		camera.rotation.z = lerp(camera.rotation.z, cos(t_bob) * 0.01, delta * 10)
 	else:
-		t_bob = 0.0
 		camera.transform.origin = camera.transform.origin.lerp(Vector3.ZERO, delta * 10)
 		camera.rotation.z = lerp(camera.rotation.z, 0.0, delta * 10)
-		
-	# --- REACCIONES VISUALES (GAME FEEL) ---
-	if status.is_suffocating or status.current_health < 30.0:
-		# Latido del corazón visual: Modificamos el FOV como si el personaje jadeara
-		var panico_pulse = sin(Time.get_ticks_msec() * 0.005) * 5.0
-		camera.fov = lerp(camera.fov, normal_fov + panico_pulse, delta * 5)
-	elif status.is_exhausted:
-		# Respiración pesada por cansancio
-		var cansancio_pulse = sin(Time.get_ticks_msec() * 0.003) * 2.0
-		camera.fov = lerp(camera.fov, normal_fov + cansancio_pulse, delta * 5)
-	else:
-		# Volver a la normalidad suavemente
-		camera.fov = lerp(camera.fov, normal_fov, delta * 5)
 
-func _calculate_headbob(time, effort_ratio) -> Array:
-	var pos = Vector3.ZERO
-	var dynamic_amp = BOB_AMP * effort_ratio
-	pos.y = sin(time * BOB_FREQ) * dynamic_amp
-	pos.x = cos(time * BOB_FREQ / 2) * dynamic_amp
-	var tilt = cos(time * BOB_FREQ / 2) * (dynamic_amp * 0.15)
-	return [pos, tilt]
+	# Efectos FOV
+	var pulse = sin(Time.get_ticks_msec() * 0.005) * pulse_intensity
+	camera.fov = lerp(camera.fov, normal_fov + pulse, delta * 5)
+
+func _on_salud_update(a, _m): pulse_intensity = 5.0 if a < 30.0 else 0.0
+func _on_agotado_update(v): if v: pulse_intensity = 2.0
