@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://tjvfo2t0mtru" path="res://scenes/player/status_manager.gd" id="4_lvxji"]
 [ext_resource type="Script" uid="uid://dr6hbdq148pc6" path="res://scenes/player/inventory_controller.gd" id="5_p47bc"]
 [ext_resource type="Script" uid="uid://btt8ubelvyoiq" path="res://scenes/player/interaction_controller.gd" id="6_75vfm"]
+[ext_resource type="PackedScene" uid="uid://dp5arvo7rdayu" path="res://scenes/modules/inventory/inventory_menu.tscn" id="7_0owmy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8afob"]
 albedo_color = Color(0, 0.17254902, 1, 1)
@@ -23,7 +24,7 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" unique_id=279801229]
+[node name="Player" type="CharacterBody3D" unique_id=279801229 groups=["player"]]
 script = ExtResource("1_8afob")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=314877668]
@@ -65,8 +66,9 @@ filtro_tipo = "herramienta"
 script = ExtResource("5_p47bc")
 grid_width = 1
 grid_height = 1
-filtro_tipo = "herramienta"
 es_slot_de_mano = true
 
 [node name="InteractionController" type="Node" parent="." unique_id=613804120]
 script = ExtResource("6_75vfm")
+
+[node name="InvUI" parent="." unique_id=742801496 instance=ExtResource("7_0owmy")]

@@ -1,6 +1,7 @@
 {
 	"bateria_litio": {
 		"nombre": "Batería de Litio",
+		"descripcion": "Batería mediana recargable", 
 		"tipo": "recurso",
 		"peso": 2.0,
 		"grid_width": 2,
@@ -8,17 +9,37 @@
 	},
 	"soldador_plasma": {
 		"nombre": "Soldador de Plasma",
+		"descripcion": "Soldador pequeño que permite reparar pequeñas instalaciones",
 		"tipo": "herramienta",
 		"peso": 3.0,
 		"grid_width": 2,
-		"grid_height": 2
+		"grid_height": 1
 	},
 	"capsula_oxigeno": {
 		"nombre": "Cápsula de O2",
+		"descripcion": "Cápsula que recupera oxígeno para casos extremos", 
 		"tipo": "consumible",
 		"peso": 0.5,
-		"valor_recarga": 25.0,
+		"valor_oxigeno": 25.0,
 		"grid_width": 1,
 		"grid_height": 1
+	},
+	"racion_comida": {
+		"nombre": "Ración K",
+		"descripcion": "Comida deshidratada de alto valor calórico", 
+		"tipo": "consumible",
+		"peso": 0.3,
+		"valor_hambre": 40.0,
+		"grid_width": 1,
+		"grid_height": 1
+	},
+	"botella_agua": {
+		"nombre": "Agua Destilada",
+		"descripcion": "Botella de agua purificada para hidratación", 
+		"tipo": "consumible",
+		"peso": 0.6,
+		"valor_sed": 50.0,
+		"grid_width": 1,
+		"grid_height": 2
 	}
 }

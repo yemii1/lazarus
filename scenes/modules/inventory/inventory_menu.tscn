@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://dp5arvo7rdayu"]
+
+[ext_resource type="Script" uid="uid://c6k6trs5ena7a" path="res://inventory_menu.gd" id="1_8bsrf"]
+
+[node name="InventoryMenu" type="Control" unique_id=1155655852]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8bsrf")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=79848639]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.012617188, 0.012617188, 0.012617188, 0.49019608)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1284124850]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer" unique_id=1388663986]
+layout_mode = 2
+
+[node name="SeccionMochila" type="VBoxContainer" parent="CenterContainer/HBoxContainer" unique_id=48094059]
+layout_mode = 2
+
+[node name="Mochila" type="Label" parent="CenterContainer/HBoxContainer/SeccionMochila" unique_id=274813365]
+layout_mode = 2
+text = "Mochila"
+
+[node name="BackpackGrid" type="GridContainer" parent="CenterContainer/HBoxContainer/SeccionMochila" unique_id=1298535510]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="CenterContainer/HBoxContainer/SeccionMochila" unique_id=1683730340]
+layout_mode = 2
+
+[node name="SeccionEquipo" type="VBoxContainer" parent="CenterContainer/HBoxContainer/SeccionMochila" unique_id=1885646945]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/SeccionMochila/SeccionEquipo" unique_id=894165303]
+layout_mode = 2
+text = "Cinturon"
+
+[node name="ToolBeltGrid" type="HBoxContainer" parent="CenterContainer/HBoxContainer/SeccionMochila/SeccionEquipo" unique_id=118973123]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/HBoxContainer/SeccionMochila/SeccionEquipo" unique_id=1419084314]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CenterContainer/HBoxContainer/SeccionMochila/SeccionEquipo" unique_id=682453630]
+layout_mode = 2
+text = "en mano"
+
+[node name="HandSlotUI" type="PanelContainer" parent="CenterContainer/HBoxContainer/SeccionMochila/SeccionEquipo" unique_id=142221645]
+unique_name_in_owner = true
+layout_mode = 2
