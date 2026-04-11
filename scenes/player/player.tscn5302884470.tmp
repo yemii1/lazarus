@@ -50,23 +50,10 @@ script = ExtResource("3_gmlin")
 [node name="StatusManager" type="Node" parent="." unique_id=1096666621]
 script = ExtResource("4_lvxji")
 
-[node name="Backpack" type="Node" parent="." unique_id=1526658584]
+[node name="InventoryController" type="Node" parent="." unique_id=1526658584]
 script = ExtResource("5_p47bc")
 grid_width = 3
 grid_height = 2
-
-[node name="ToolBelt" type="Node" parent="." unique_id=397805244]
-script = ExtResource("5_p47bc")
-grid_width = 4
-grid_height = 1
-filtro_tipo = "herramienta"
-
-[node name="HandSlot" type="Node" parent="." unique_id=64425423]
-script = ExtResource("5_p47bc")
-grid_width = 1
-grid_height = 1
-filtro_tipo = "herramienta"
-es_slot_de_mano = true
 
 [node name="InteractionController" type="Node" parent="." unique_id=613804120]
 script = ExtResource("6_75vfm")
