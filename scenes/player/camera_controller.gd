@@ -15,7 +15,7 @@ func _ready():
 		status.salud_cambiada.connect(_on_salud_update)
 		status.agotado.connect(_on_agotado_update)
 
-func _unhandled_input(event):
+func _input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		player.rotate_y(-event.relative.x * 0.002)
 		rotate_x(-event.relative.y * 0.002)

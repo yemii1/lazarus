@@ -20,7 +20,7 @@
 		"descripcion": "Cápsula que recupera oxígeno para casos extremos", 
 		"tipo": "consumible",
 		"peso": 0.5,
-		"valor_oxigeno": 25.0,
+		"valor_recarga": 25.0,
 		"grid_width": 1,
 		"grid_height": 1
 	},

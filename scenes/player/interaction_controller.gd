@@ -9,7 +9,7 @@ func _ready():
 	raycast = player.find_child("RayCast3D", true, false)
 	
 	if not raycast:
-		push_warning("⚠️ InteractionController: No se encontró RayCast3D en el jugador.")
+		push_warning("InteractionController: No se encontró RayCast3D en el jugador.")
 
 func _unhandled_input(event):
 	if not player.is_multiplayer_authority(): return

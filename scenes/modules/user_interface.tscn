@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://udn8bfnv61uw"]
+
+[ext_resource type="Script" uid="uid://c31dcajsugkdh" path="res://scenes/modules/ui_controller.gd" id="1_b08ve"]
+[ext_resource type="PackedScene" uid="uid://ciddsrgwnsauk" path="res://scenes/modules/hud/helmet/helmet_hud.tscn" id="2_r5urq"]
+[ext_resource type="PackedScene" uid="uid://dp5arvo7rdayu" path="res://scenes/modules/inventory/inventory_menu.tscn" id="3_tb73s"]
+
+[node name="UserInterface" type="CanvasLayer" unique_id=376068338]
+script = ExtResource("1_b08ve")
+
+[node name="HelmetHUD" parent="." unique_id=211487022 instance=ExtResource("2_r5urq")]
+
+[node name="InventoryMenu" parent="." unique_id=1155655852 instance=ExtResource("3_tb73s")]

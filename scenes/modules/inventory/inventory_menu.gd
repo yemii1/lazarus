@@ -13,25 +13,16 @@ var player: CharacterBody3D = null
 var dragged_preview_node: Control = null
 var dragged_is_rotated: bool = false
 
-func _ready():
-	visible = false
-	_esperar_jugador_local()
-
-func _esperar_jugador_local():
-	var mi_id = str(multiplayer.get_unique_id())
-	var target = get_tree().current_scene.find_child(mi_id, true, false)
+func setup(jugador_ref: CharacterBody3D):
+	player = jugador_ref
+	# Conectamos las señales del jugador a este menú
+	if not player.mochila.peso_actualizado.is_connected(_actualizar_todo):
+		player.mochila.peso_actualizado.connect(_actualizar_todo)
+		player.cinturon.peso_actualizado.connect(_actualizar_todo)
+		player.mano.peso_actualizado.connect(_actualizar_todo)
 	
-	# Verificación de "Seguridad Triple":
-	# 1. ¿Existe el nodo jugador?
-	# 2. ¿Tiene el script correcto?
-	# 3. ¿Sus variables @onready ya se inicializaron? (no son null)
-	if target and "mochila" in target and target.mochila != null:
-		player = target
-		_conectar_senales_jugador()
-	else:
-		# Si no está listo, esperamos un frame y reintentamos
-		await get_tree().process_frame 
-		_esperar_jugador_local()
+	# Dibujamos los slots por primera vez
+	_actualizar_todo(0)
 
 func _conectar_senales_jugador():
 	# Doble protección con is_instance_valid por si el jugador se desconecta justo ahora
@@ -61,24 +52,13 @@ func _process(_delta):
 	else:
 		dragged_preview_node = null
 
-# --- INPUT Y VISIBILIDAD ---
-
-func _input(event):
-	if not player: return 
-	
-	if event.is_action_pressed("inventory"): 
-		visible = !visible
-		if visible:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			_actualizar_todo(0)
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
 # --- LÓGICA DE DIBUJADO (OPTIMIZADA) ---
 
 func _actualizar_todo(_peso_ignorante):
-	if not player or not visible: return 
+	if not is_instance_valid(player): 
+		return # SOLO abortamos si el jugador no existe
 	
+	# Si llega aquí, dibuja siempre (esté abierto o cerrado)
 	_dibujar_contenedor(backpack_grid, player.mochila)
 	_dibujar_contenedor(toolbelt_grid, player.cinturon)
 	_dibujar_contenedor(hand_slot_ui, player.mano)

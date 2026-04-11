@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://tjvfo2t0mtru" path="res://scenes/player/status_manager.gd" id="4_lvxji"]
 [ext_resource type="Script" uid="uid://dr6hbdq148pc6" path="res://scenes/player/inventory_controller.gd" id="5_p47bc"]
 [ext_resource type="Script" uid="uid://btt8ubelvyoiq" path="res://scenes/player/interaction_controller.gd" id="6_75vfm"]
-[ext_resource type="PackedScene" uid="uid://dp5arvo7rdayu" path="res://scenes/modules/inventory/inventory_menu.tscn" id="7_0owmy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8afob"]
 albedo_color = Color(0, 0.17254902, 1, 1)
@@ -70,5 +69,3 @@ es_slot_de_mano = true
 
 [node name="InteractionController" type="Node" parent="." unique_id=613804120]
 script = ExtResource("6_75vfm")
-
-[node name="InvUI" parent="." unique_id=742801496 instance=ExtResource("7_0owmy")]

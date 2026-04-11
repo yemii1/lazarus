@@ -20,6 +20,11 @@ config/icon="res://icon.svg"
 NetworkManager="*uid://dm0vhe0yei7e4"
 DataManager="*uid://7fn4d388i33s"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [input]
 
 jump={
