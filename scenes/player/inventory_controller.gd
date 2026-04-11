@@ -86,3 +86,19 @@ func _find_first_free_space(w: int, h: int) -> Vector2:
 		for x in range(grid_width):
 			if is_space_free(x, y, w, h): return Vector2(x, y)
 	return Vector2(-1, -1)
+
+# Transfiere un objeto de ESTE inventario a OTRO (destino)
+func transfer_to(item_index: int, target_inventory: Node) -> bool:
+	if item_index < 0 or item_index >= inventory_items.size():
+		return false
+	
+	var item = inventory_items[item_index]
+	
+	# Intentamos añadirlo al otro inventario
+	if target_inventory.auto_add_item(item["id"]):
+		# Si el destino lo aceptó, lo borramos de aquí
+		inventory_items.remove_at(item_index)
+		peso_actualizado.emit(calcular_peso_total())
+		return true
+		
+	return false

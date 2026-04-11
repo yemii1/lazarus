@@ -5,18 +5,18 @@ extends CharacterBody3D
 var total_inventory_weight: float = 0.0
 
 # --- REFERENCIAS A NODOS ---
-# Asegúrate de que estos nombres coincidan con tus nodos en la escena
+# Los nombres aquí deben coincidir con los nodos en escena
 @onready var mochila = $Backpack
 @onready var cinturon = $ToolBelt
 @onready var mano = $HandSlot
 @onready var status = $StatusManager
 
-# --- PRECARGAS ---
+# --- PRELOADS ---
 const ITEM_SCENE = preload("res://scenes/modules/item/item_3d.tscn")
 
 # --- CONFIGURACIÓN DE RED ---
 func _enter_tree():
-	# El nombre del nodo debe ser el ID único del peer (Network Authority)
+	# El nombre del nodo debe ser el ID único del peer para autoridad de red
 	if name.is_valid_int():
 		set_multiplayer_authority(name.to_int())
 
@@ -26,7 +26,7 @@ func _ready():
 	if NetworkManager.spawn_positions.has(my_id_str):
 		global_position = NetworkManager.spawn_positions[my_id_str]
 	
-	# --- CONEXIÓN DE SEÑALES (ARQUITECTURA OBSERVAR) ---
+	# --- CONEXIÓN DE SEÑALES ---
 	# Solo el dueño del personaje gestiona sus señales de inventario
 	if is_multiplayer_authority():
 		var contenedores = [mochila, cinturon, mano]
@@ -34,17 +34,17 @@ func _ready():
 			inv.peso_actualizado.connect(_on_peso_cambiado)
 			inv.objeto_soltado_fisicamente.connect(_on_objeto_soltado)
 			inv.objeto_consumido.connect(_on_objeto_consumido)
-		print("✅ Sistemas de inventario conectados para el jugador: ", name)
+		print("Sistemas de inventario conectados para el jugador: ", name)
 
 # --- SISTEMA DE MEJORAS (UPGRADES) ---
 
 func mejorar_mochila(nuevo_w: int, nuevo_h: int):
 	mochila.actualizar_tamano(nuevo_w, nuevo_h)
-	print("🎒 Mochila mejorada a: ", nuevo_w, "x", nuevo_h)
+	print("Mochila mejorada a: ", nuevo_w, "x", nuevo_h)
 
 func mejorar_cinturon(nuevo_w: int):
 	cinturon.actualizar_tamano(nuevo_w, 1)
-	print("🔧 Cinturón mejorado a: ", nuevo_w, " slots")
+	print("Cinturón mejorado a: ", nuevo_w, " slots")
 
 # --- CALLBACKS DE SEÑALES ---
 
@@ -63,7 +63,7 @@ func _on_objeto_consumido(data: Dictionary):
 	if data.has("valor_curacion"):
 		status.curar(data["valor_curacion"])
 	
-	print("💊 Consumido: ", data.get("nombre", "Objeto desconocido"))
+	print("Consumido: ", data.get("nombre", "Objeto desconocido"))
 
 func _on_objeto_soltado(item_id: String):
 	# Calculamos posición de spawn: 1.5m adelante, 1m arriba
@@ -86,11 +86,11 @@ func generar_en_red(id: String, pos: Vector3):
 		nuevo_objeto.apply_central_impulse(dir * 3.0)
 
 func morir():
-	print("💀 Muerte detectada. Desactivando procesos...")
+	print("Muerte detectada. Desactivando procesos...")
 	set_physics_process(false)
 	# Aquí podrías añadir lógica de ragdoll o pantalla de Game Over
 
-# --- SISTEMA DE PRUEBAS (QA TESTING) ---
+# --- SISTEMA DE PRUEBAS ---
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
