@@ -7,6 +7,8 @@ var t_bob = 0.0
 
 @onready var camera = $Camera3D
 @onready var player = get_parent() # El componente habla con el Jefe
+@onready var status = $"../StatusManager"
+var normal_fov = 75.0
 
 func _ready():
 	if player.is_multiplayer_authority():
@@ -49,6 +51,19 @@ func _process(delta):
 		t_bob = 0.0
 		camera.transform.origin = camera.transform.origin.lerp(Vector3.ZERO, delta * 10)
 		camera.rotation.z = lerp(camera.rotation.z, 0.0, delta * 10)
+		
+	# --- REACCIONES VISUALES (GAME FEEL) ---
+	if status.is_suffocating or status.current_health < 30.0:
+		# Latido del corazón visual: Modificamos el FOV como si el personaje jadeara
+		var panico_pulse = sin(Time.get_ticks_msec() * 0.005) * 5.0
+		camera.fov = lerp(camera.fov, normal_fov + panico_pulse, delta * 5)
+	elif status.is_exhausted:
+		# Respiración pesada por cansancio
+		var cansancio_pulse = sin(Time.get_ticks_msec() * 0.003) * 2.0
+		camera.fov = lerp(camera.fov, normal_fov + cansancio_pulse, delta * 5)
+	else:
+		# Volver a la normalidad suavemente
+		camera.fov = lerp(camera.fov, normal_fov, delta * 5)
 
 func _calculate_headbob(time, effort_ratio) -> Array:
 	var pos = Vector3.ZERO

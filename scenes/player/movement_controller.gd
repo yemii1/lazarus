@@ -6,8 +6,10 @@ var base_sprint_speed = 8.0
 var crouch_speed = 2.5
 var jump_velocity = 4.5
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var waiting_for_sprint_release: bool = false
 
 @onready var player = get_parent() # El componente habla con el Jefe
+@onready var status = $"../StatusManager"
 
 func _physics_process(delta):
 	if not player.is_multiplayer_authority(): return
@@ -28,11 +30,29 @@ func _physics_process(delta):
 		# Si llevas mucho peso, saltarás menos
 		player.velocity.y = max(1.0, jump_velocity - (weight_penalty * 0.5))
 
-	# Estados (Agachado / Sprint)
+	# --- CONTROL DE FATIGA (EL PARCHE) ---
+	# Si llegas a 0 de estamina, activamos el castigo
+	if status.is_exhausted:
+		waiting_for_sprint_release = true
+		
+	# El castigo solo se levanta cuando el jugador SUELTA la tecla Shift
+	if not Input.is_action_pressed("sprint"):
+		waiting_for_sprint_release = false
+
+
+	# --- ESTADOS DE MOVIMIENTO ---
 	if Input.is_action_pressed("crouch"):
 		current_speed = crouch_speed
-	elif Input.is_action_pressed("sprint") and player.is_on_floor():
+		status.regen_stamina(delta) 
+		
+	# Añadimos la condición "not waiting_for_sprint_release" para bloquear el auto-sprint
+	elif Input.is_action_pressed("sprint") and player.is_on_floor() and not status.is_exhausted and not waiting_for_sprint_release:
 		current_speed = max(2.0, base_sprint_speed - weight_penalty)
+		status.drain_stamina(delta) 
+		
+	else:
+		current_speed = max(1.0, base_walk_speed - weight_penalty)
+		status.regen_stamina(delta)
 
 	# Movimiento WASD
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
