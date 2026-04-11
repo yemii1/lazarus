@@ -1,0 +1,24 @@
+{
+	"bateria_litio": {
+		"nombre": "Batería de Litio",
+		"tipo": "recurso",
+		"peso": 2.0,
+		"grid_width": 2,
+		"grid_height": 2
+	},
+	"soldador_plasma": {
+		"nombre": "Soldador de Plasma",
+		"tipo": "herramienta",
+		"peso": 3.0,
+		"grid_width": 2,
+		"grid_height": 2
+	},
+	"capsula_oxigeno": {
+		"nombre": "Cápsula de O2",
+		"tipo": "consumible",
+		"peso": 0.5,
+		"valor_recarga": 25.0,
+		"grid_width": 1,
+		"grid_height": 1
+	}
+}

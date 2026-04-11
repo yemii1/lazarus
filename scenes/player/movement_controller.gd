@@ -16,7 +16,7 @@ func _physics_process(delta):
 
 	# --- SISTEMA DE PESO DINÁMICO ---
 	# Leemos el peso del inventario del Jefe. Cada 10kg = -1 de velocidad
-	var weight_penalty = player.inventory_weight * 0.1 
+	var weight_penalty = player.total_inventory_weight * 0.1 
 	
 	# La velocidad nunca bajará de 1.0 aunque lleves 1000 kilos (para no quedarte atascado)
 	var current_speed = max(1.0, base_walk_speed - weight_penalty)
