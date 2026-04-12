@@ -1,8 +1,14 @@
 [gd_scene format=3 uid="uid://ciddsrgwnsauk"]
 
 [ext_resource type="Script" uid="uid://bxlnh1h2wrgad" path="res://scenes/modules/hud/helmet/helmet_hud.gd" id="1_jlmjy"]
-[ext_resource type="Shader" uid="uid://ed47pjycf6bq" path="res://scenes/modules/hud/helmet/visor_effect.gdshader" id="2_363mk"]
 [ext_resource type="FontFile" uid="uid://du1hf74ry2el8" path="res://assets/fonts/Orbitron-VariableFont_wght.ttf" id="2_f4qd6"]
+[ext_resource type="Script" uid="uid://drap6f0emyfep" path="res://scenes/modules/hud/helmet/layout_root.gd" id="2_muag2"]
+[ext_resource type="Shader" uid="uid://c6smwwqwmj6nm" path="res://scenes/modules/hud/helmet/helmet_hud.gdshader" id="2_y24aa"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0g43u"]
+shader = ExtResource("2_y24aa")
+shader_parameter/curvature = 0.10000000149012
+shader_parameter/aberration_intensity = 0.002000000095
 
 [sub_resource type="Gradient" id="Gradient_jlmjy"]
 colors = PackedColorArray(18.892157, 18.892157, 18.892157, 1, 1, 1, 1, 1)
@@ -22,17 +28,12 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_0g43u"]
 gradient = SubResource("Gradient_y24aa")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_muag2"]
-resource_local_to_scene = true
-shader = ExtResource("2_363mk")
-shader_parameter/curvature = 0.0
-
 [sub_resource type="Animation" id="Animation_jlmjy"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SwayContainer/CenterContainer/AlertLabel:modulate")
+tracks/0/path = NodePath("SwayContainer/LayoutRoot/CenterContainer/AlertLabel:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -49,7 +50,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SwayContainer/CenterContainer/AlertLabel:modulate")
+tracks/0/path = NodePath("SwayContainer/LayoutRoot/CenterContainer/AlertLabel:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -66,7 +67,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SwayContainer/CenterContainer/AlertLabel:modulate")
+tracks/0/path = NodePath("SwayContainer/LayoutRoot/CenterContainer/AlertLabel:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -83,41 +84,64 @@ _data = {
 &"alerta_suave": SubResource("Animation_363mk")
 }
 
-[node name="HelmetHUD" type="Control" unique_id=1215773428]
+[node name="HelmetHUD" type="CanvasLayer" unique_id=1789555414]
+script = ExtResource("1_jlmjy")
+
+[node name="BaseControl" type="Control" parent="." unique_id=1473565743]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SwayContainer" type="CanvasGroup" parent="." unique_id=1755071104]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_0g43u")
+
+[node name="LayoutRoot" type="Control" parent="SwayContainer" unique_id=1117139890]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_jlmjy")
+script = ExtResource("2_muag2")
 
-[node name="SwayContainer" type="Control" parent="." unique_id=1495811326]
-unique_name_in_owner = true
+[node name="Crosshair" type="ColorRect" parent="SwayContainer/LayoutRoot" unique_id=838179957]
+custom_minimum_size = Vector2(4, 4)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.5019608, 0.5019608, 0.5019608, 0.8)
 
-[node name="MarginLeft" type="MarginContainer" parent="SwayContainer" unique_id=25325806]
+[node name="MarginLeft" type="MarginContainer" parent="SwayContainer/LayoutRoot" unique_id=25325806]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = -20.0
-offset_right = 40.0
-offset_bottom = 20.0
+offset_top = -135.0
+offset_right = 84.0
+offset_bottom = 135.0
 grow_vertical = 2
 theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SwayContainer/MarginLeft" unique_id=1492131911]
+[node name="HBoxContainer" type="HBoxContainer" parent="SwayContainer/LayoutRoot/MarginLeft" unique_id=1492131911]
 layout_mode = 2
 
-[node name="HealthBar" type="TextureProgressBar" parent="SwayContainer/MarginLeft/HBoxContainer" unique_id=866706910]
+[node name="HealthBar" type="TextureProgressBar" parent="SwayContainer/LayoutRoot/MarginLeft/HBoxContainer" unique_id=866706910]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(30, 250)
+custom_minimum_size = Vector2(30, 350)
 layout_mode = 2
 step = 0.01
 fill_mode = 3
@@ -126,9 +150,9 @@ texture_progress = SubResource("GradientTexture1D_f4qd6")
 tint_under = Color(0.10980392, 0.10980392, 0.10980392, 0.23529412)
 tint_progress = Color(0.59607846, 1, 0.59607846, 0.7058824)
 
-[node name="StaminaBar" type="TextureProgressBar" parent="SwayContainer/MarginLeft/HBoxContainer" unique_id=1478398132]
+[node name="StaminaBar" type="TextureProgressBar" parent="SwayContainer/LayoutRoot/MarginLeft/HBoxContainer" unique_id=1478398132]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(30, 250)
+custom_minimum_size = Vector2(30, 350)
 layout_mode = 2
 step = 0.01
 fill_mode = 3
@@ -138,23 +162,26 @@ tint_under = Color(0.10980392, 0.10980392, 0.10980392, 0.5882353)
 tint_over = Color(0.10980392, 0.10980392, 0.10980392, 0.5882353)
 tint_progress = Color(0.9607843, 0.84313726, 0.32156864, 0.7058824)
 
-[node name="MarginRight" type="MarginContainer" parent="SwayContainer" unique_id=982592879]
+[node name="MarginRight" type="MarginContainer" parent="SwayContainer/LayoutRoot" unique_id=982592879]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -40.0
-offset_top = -20.0
-offset_bottom = 20.0
+offset_left = -164.0
+offset_top = -175.0
+offset_bottom = 175.0
 grow_horizontal = 0
 grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="OxygenBar" type="TextureProgressBar" parent="SwayContainer/MarginRight" unique_id=41472320]
+[node name="OxygenBar" type="TextureProgressBar" parent="SwayContainer/LayoutRoot/MarginRight" unique_id=41472320]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(30, 250)
+custom_minimum_size = Vector2(64, 350)
 layout_mode = 2
 step = 0.01
 fill_mode = 3
@@ -163,35 +190,35 @@ texture_progress = SubResource("GradientTexture1D_0g43u")
 tint_under = Color(0.10980392, 0.10980392, 0.10980392, 0.23529412)
 tint_progress = Color(0, 1, 1, 0.7058824)
 
-[node name="MarginBottomLeft" type="MarginContainer" parent="SwayContainer" unique_id=854687957]
+[node name="MarginBottomLeft" type="MarginContainer" parent="SwayContainer/LayoutRoot" unique_id=854687957]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -100.0
-offset_right = 100.0
+offset_top = -141.0
+offset_right = 101.0
 grow_vertical = 0
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="HungerLabel" type="Label" parent="SwayContainer/MarginBottomLeft" unique_id=990943888]
+[node name="HungerLabel" type="Label" parent="SwayContainer/LayoutRoot/MarginBottomLeft" unique_id=990943888]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.49411765, 0, 0.5882353)
 theme_override_fonts/font = ExtResource("2_f4qd6")
 theme_override_font_sizes/font_size = 32
 
-[node name="MarginBottomRight" type="MarginContainer" parent="SwayContainer" unique_id=874559953]
+[node name="MarginBottomRight" type="MarginContainer" parent="SwayContainer/LayoutRoot" unique_id=874559953]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -100.0
+offset_left = -101.0
+offset_top = -141.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_constants/margin_left = 50
@@ -199,14 +226,14 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="ThirstLabel" type="Label" parent="SwayContainer/MarginBottomRight" unique_id=633773516]
+[node name="ThirstLabel" type="Label" parent="SwayContainer/LayoutRoot/MarginBottomRight" unique_id=633773516]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.10980392, 0.8117647, 1, 0.5882353)
 theme_override_fonts/font = ExtResource("2_f4qd6")
 theme_override_font_sizes/font_size = 32
 
-[node name="MarginTop" type="MarginContainer" parent="SwayContainer" unique_id=1130107309]
+[node name="MarginTop" type="MarginContainer" parent="SwayContainer/LayoutRoot" unique_id=1130107309]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -220,28 +247,52 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="CenterContainer" type="CenterContainer" parent="SwayContainer" unique_id=1032353372]
+[node name="DigitalCompass" type="HBoxContainer" parent="SwayContainer/LayoutRoot/MarginTop" unique_id=1313336139]
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 1
+
+[node name="DegreeLabel" type="Label" parent="SwayContainer/LayoutRoot/MarginTop/DigitalCompass" unique_id=642531573]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("2_f4qd6")
+theme_override_font_sizes/font_size = 24
+text = "000°"
+
+[node name="CardinalLabel" type="Label" parent="SwayContainer/LayoutRoot/MarginTop/DigitalCompass" unique_id=1938526663]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("2_f4qd6")
+theme_override_font_sizes/font_size = 24
+text = "N"
+
+[node name="CenterContainer" type="CenterContainer" parent="SwayContainer/LayoutRoot" unique_id=1032353372]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -50.0
+offset_right = 28.0
+offset_bottom = -29.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AlertLabel" type="Label" parent="SwayContainer/CenterContainer" unique_id=198510813]
+[node name="AlertLabel" type="Label" parent="SwayContainer/LayoutRoot/CenterContainer" unique_id=198510813]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_f4qd6")
 text = "alerts"
+horizontal_alignment = 1
 
-[node name="VisorShader" type="ColorRect" parent="." unique_id=1269389062]
-material = SubResource("ShaderMaterial_muag2")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="HelmetFrame" type="TextureRect" parent="SwayContainer/LayoutRoot" unique_id=2131121992]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=291755282]
 libraries/ = SubResource("AnimationLibrary_muag2")

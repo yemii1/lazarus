@@ -2,10 +2,12 @@ extends CharacterBody3D
 
 signal recurso_consumido(tipo: String, cantidad: float)
 signal peso_total_actualizado(nuevo_peso: float)
+signal casco_toggled(esta_puesto: bool)
 
 @export var is_sprinting: bool = false
 var is_exhausted: bool = false
 var total_inventory_weight: float = 0.0
+var tiene_casco_puesto: bool = false
 
 @onready var mochila = $Backpack
 @onready var cinturon = $ToolBelt
@@ -24,6 +26,19 @@ func _ready():
 	if is_multiplayer_authority():
 		_conectar_componentes()
 		mochila.auto_add_item("soldador_plasma")
+		
+func _input(event):
+	# Solo el dueño de este personaje puede pulsar la tecla
+	if not is_multiplayer_authority(): return
+	
+	if event.is_action_pressed("toggle_helmet"): # Asigna "toggle_helmet" a la "H" en Input Map
+		_toggle_casco_local()
+
+func _toggle_casco_local():
+	tiene_casco_puesto = !tiene_casco_puesto
+	print("1. [JUGADOR]: Tecla pulsada. Casco puesto = ", tiene_casco_puesto) # <-- AÑADE ESTO
+	# 1. Avisamos al HUD local para que encienda/apague la pantalla
+	casco_toggled.emit(tiene_casco_puesto)
 
 func _conectar_componentes():
 	# Conexión de Inventarios

@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 # ==========================================
 # REFERENCIAS A LOS NODOS VISUALES
@@ -13,6 +13,9 @@ extends Control
 
 @onready var hunger_label = %HungerLabel
 @onready var thirst_label = %ThirstLabel
+
+@onready var degree_label = $%DegreeLabel
+@onready var cardinal_label = $%CardinalLabel
 
 
 # ==========================================
@@ -29,7 +32,8 @@ var target_offset: Vector2 = Vector2.ZERO
 # VARIABLES DE ESTADO LOCALES (El "Cerebro" del HUD)
 # ==========================================
 var status_manager: Node = null
-var player: CharacterBody3D = null # Aquí guardaremos al dueño del HUD
+var player: CharacterBody3D = null
+var player_camera: Camera3D = null
 var alerta_actual: String = ""
 
 # Guardamos copias locales de los porcentajes. 
@@ -50,9 +54,10 @@ func _ready():
 # ==========================================
 # CONEXIÓN CON EL JUGADOR
 # ==========================================
-func setup(player_node: CharacterBody3D):
+func setup(player_node: CharacterBody3D, camera_node: Camera3D):
 	player = player_node
 	status_manager = player.status
+	player_camera = camera_node
 	
 	# Conectamos las señales a nuestras funciones receptoras
 	if not status_manager.salud_cambiada.is_connected(_update_health):
@@ -88,7 +93,9 @@ func _process(delta):
 	# 3. Revisamos constantemente el estado de las alarmas
 	if is_instance_valid(status_manager):
 		_revisar_alertas()
-
+	
+	if is_instance_valid(player_camera):
+		_update_compass(player_camera)
 # ==========================================
 # ACTUALIZACIÓN VISUAL (Recepción de Señales)
 # ==========================================
@@ -108,6 +115,26 @@ func _update_hunger(actual: float, max_v: float):
 func _update_thirst(actual: float, max_v: float):
 	pct_sed = (actual / max_v) * 100.0
 	thirst_label.text = str(int(pct_sed)) + "%"
+	
+func _update_compass(camera: Camera3D):
+	# 1. Obtener la rotación real en grados (0 a 360)
+	var rot_y = camera.global_transform.basis.get_euler().y
+	var heading = wrapf(rad_to_deg(-rot_y), 0.0, 360.0)
+	
+	# 2. Formatear a 3 dígitos (ej. "005°", "045°", "350°")
+	# "%03d" es un truco de formato que obliga a rellenar con ceros a la izquierda
+	degree_label.text = "%03d°" % int(heading)
+	
+	# 3. Calcular la letra (Matemática de Sectores)
+	# Hay 8 direcciones. Cada una ocupa 45 grados (360 / 8 = 45).
+	# Sumamos 22.5 para que el "Norte" no empiece en el 0, sino que el 0 esté en el centro del sector.
+	var directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"]
+	
+	# Calculamos en qué "porción" de la tarta estamos (0 a 8)
+	var sector = int(round(fmod(heading + 22.5, 360.0) / 45.0))
+	
+	# 4. Asignamos la letra
+	cardinal_label.text = directions[sector]
 	
 
 # ==========================================
