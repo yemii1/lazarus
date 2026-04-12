@@ -52,8 +52,8 @@ script = ExtResource("4_lvxji")
 
 [node name="Backpack" type="Node" parent="." unique_id=1526658584]
 script = ExtResource("5_p47bc")
-grid_width = 3
-grid_height = 2
+grid_width = 4
+grid_height = 4
 
 [node name="ToolBelt" type="Node" parent="." unique_id=397805244]
 script = ExtResource("5_p47bc")
