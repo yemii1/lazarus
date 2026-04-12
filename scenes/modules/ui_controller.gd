@@ -38,7 +38,7 @@ func _iniciar_interfaces():
 			player.casco_toggled.connect(_on_casco_toggled)
 		
 		# Forzamos el estado inicial para que coincida )
-		_on_casco_toggled(player.tiene_casco_puesto)
+		helmet_hud.reproducir_animacion_casco(player.tiene_casco_puesto, true)
 		
 	# 2. ENCENDEMOS EL INVENTARIO
 	if is_instance_valid(inventory_menu):
@@ -47,13 +47,8 @@ func _iniciar_interfaces():
 	_actualizar_mouse()
 
 func _on_casco_toggled(esta_puesto: bool):
-	print("2. [UI]: Señal recibida. HUD visible = ", esta_puesto) # <-- AÑADE ESTO
 	if is_instance_valid(helmet_hud):
-		helmet_hud.visible = esta_puesto
-		
-		# Apagamos/Encendemos el cerebro del HUD para ahorrar recursos de la gráfica
-		helmet_hud.set_process(esta_puesto)
-		helmet_hud.set_process_input(esta_puesto)
+		helmet_hud.reproducir_animacion_casco(esta_puesto)
 
 func _input(event):
 	if not is_instance_valid(player): return
