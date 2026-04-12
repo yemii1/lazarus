@@ -83,8 +83,8 @@ func _mostrar_menu_contextual(pos_raton: Vector2):
 	var popup = PopupMenu.new()
 	
 	if data.get("tipo") == "consumible":
-		popup.add_item("🍎 Consumir", 0)
-	popup.add_item("⬇️ Tirar al suelo", 1)
+		popup.add_item("Consumir", 0)
+	popup.add_item("Tirar al suelo", 1)
 	
 	popup.id_pressed.connect(_on_menu_opcion_seleccionada)
 	# IMPORTANTE: Que el popup se borre al cerrarse para no acumular basura
